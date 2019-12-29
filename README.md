@@ -4,7 +4,9 @@ You can find someone's git stars by user name.
 
 ## Usage
 
-lein run [user-name]
+lein run [user-name &]
+
+    lein run id1 id2 id3
 
 ## License
 
