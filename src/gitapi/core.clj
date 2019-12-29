@@ -7,7 +7,7 @@
 (def completeURL "https://api.github.com/users/")
 (def repos "/repos")
 
-(def progress (atom 0))
+(def progress (atom -1))
 (def index    (atom -1))
 (def result   (atom []))
 (def _0Bar   "○○○○○   0%")
@@ -17,15 +17,17 @@
 (def _80Bar  "●●●●○  80%")
 (def _100Bar "●●●●● 100%")
 
+
 (defn printProgressBar
   [currentValue beforeValue]
   (case currentValue
-    0   (do (println _0Bar)   (reset! progress 20))
-    20  (do (println _20Bar)  (reset! progress 40))
-    40  (do (println _40Bar)  (reset! progress 60))
-    60  (do (println _60Bar)  (reset! progress 80))
-    80  (do (println _80Bar)  (reset! progress 100))
-    100 (do (println _100Bar))))
+    0   (do (println _0Bar)  (swap! progress inc))
+    20  (do (println _20Bar) (swap! progress inc))
+    40  (do (println _40Bar) (swap! progress inc))
+    60  (do (println _60Bar) (swap! progress inc))
+    80  (do (println _80Bar) (swap! progress inc))
+    100 (println _100Bar)
+    (swap! progress inc)))
 
 (add-watch progress :progress
   (fn [key atom old-state new-state]
@@ -54,5 +56,5 @@
       (println "Usage: lein run [user-id]")
       (do (dorun (map (fn [value] 
                           (swap! index inc) 
-                          (getStars value @index)) args))
-          (reset! progress 20))))
+                          (getStars value @index)) args))))
+    (swap! progress inc))
